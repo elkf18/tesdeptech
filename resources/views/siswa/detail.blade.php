@@ -51,6 +51,40 @@
                                 </div>
                             </div>
                         @endif
+
+                        <hr>
+
+                        <h4>Ekstrakulikuler</h4>
+
+                        <table class="table">
+                            <thead>
+                                <tr >
+                                    <th>Nama Ekstrakulikuler</th>
+                                    <th>Tahun Mulai</th>
+                                    <th  class="d-flex justify-content-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($siswa->ekstrakulikulers as $ekstrakulikuler)
+                                    <tr>
+                                        <td>{{ $ekstrakulikuler->nama_ekstrakulikuler }}</td>
+                                        <td>{{ $ekstrakulikuler->tahun_mulai }}</td>
+                                        <td>
+                                            <div class="d-flex justify-content-center">
+                                                <a href="{{ route('ekstrakulikuler.edit',['siswa_id' => $siswa->id, 'ekstrakulikuler_id' => $ekstrakulikuler->id]) }}" class="btn btn-primary btn-sm">Edit</a>
+                                                <form action="{{ route('ekstrakulikuler.destroy', ['siswa_id' => $siswa->id, 'ekstrakulikuler_id' => $ekstrakulikuler->id]) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus</button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+
+                        <a href="{{ route('ekstrakulikuler.create', ['siswa_id' => $siswa->id]) }}" class="btn btn-primary">Tambah Ekstrakulikuler</a>
                     </div>
                 </div>
             </div>

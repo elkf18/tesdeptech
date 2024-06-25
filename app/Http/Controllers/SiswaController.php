@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Siswa;
+use App\Models\Ekstrakulikuler;
 use Illuminate\Support\Facades\Storage;
 
 class SiswaController extends Controller
@@ -123,28 +124,84 @@ class SiswaController extends Controller
         return redirect()->route('siswa.index')
                          ->with('success', 'Data siswa berhasil dihapus');
     }
-    public function createEkstrakulikuler($siswa_id)
+        public function createEkstrakulikuler($siswa_id)
+    {
+        $siswa = Siswa::find($siswa_id);
+        return view('ekstrakulikuler.create', ['siswa' => $siswa]);
+    }
+
+    public function storeEkstrakulikuler(Request $request, $siswa_id)
+    {
+        $request->validate([
+            'nama_ekstrakulikuler' => 'required|string',
+            'tahun_mulai' => 'required|integer',
+        ]);
+
+        $siswa = Siswa::find($siswa_id);
+
+        $siswa->ekstrakulikulers()->create([
+            'nama_ekstrakulikuler' => $request->nama_ekstrakulikuler,
+            'tahun_mulai' => $request->tahun_mulai,
+        ]);
+
+        return redirect()->route('siswa.show', $siswa_id)
+                        ->with('success', 'Data ekstrakulikuler berhasil ditambahkan');
+    }
+
+    public function editEkstrakulikuler($siswa_id, $ekstrakulikuler_id)
+    {
+        $siswa = Siswa::find($siswa_id);
+        $ekstrakulikuler = Ekstrakulikuler::find($ekstrakulikuler_id);
+        
+        if (!$ekstrakulikuler) {
+            return redirect()->route('siswa.show', $siswa_id)
+                             ->with('error', 'Ekstrakulikuler not found');
+        }
+
+        return view('ekstrakulikuler.edit', ['siswa' => $siswa, 'ekstrakulikuler' => $ekstrakulikuler]);
+    }
+
+    // Menyimpan perubahan pada data ekstrakulikuler
+    public function updateEkstrakulikuler(Request $request, $siswa_id, $ekstrakulikuler_id)
+    {
+        $request->validate([
+            'nama_ekstrakulikuler' => 'required|string',
+            'tahun_mulai' => 'required|integer',
+        ]);
+
+        $siswa = Siswa::find($siswa_id);
+        $ekstrakulikuler = Ekstrakulikuler::find($ekstrakulikuler_id);
+        
+        if (!$ekstrakulikuler) {
+            return redirect()->route('siswa.show', $siswa_id)
+                             ->with('error', 'Ekstrakulikuler not found');
+        }
+
+        $ekstrakulikuler->nama_ekstrakulikuler = $request->nama_ekstrakulikuler;
+        $ekstrakulikuler->tahun_mulai = $request->tahun_mulai;
+        $ekstrakulikuler->save();
+
+        return redirect()->route('siswa.show', $siswa_id)
+                        ->with('success', 'Data ekstrakulikuler berhasil diperbarui');
+    }
+    public function destroyEkstrakulikuler($siswa_id, $ekstrakulikuler_id)
 {
     $siswa = Siswa::find($siswa_id);
-    return view('ekstrakulikuler.create', ['siswa' => $siswa]);
-}
 
-public function storeEkstrakulikuler(Request $request, $siswa_id)
-{
-    $request->validate([
-        'nama_ekstrakulikuler' => 'required|string',
-        'tahun_mulai' => 'required|integer',
-    ]);
+    // Find the specific ekstrakulikuler by id
+    $ekstrakulikuler = $siswa->ekstrakulikulers()->find($ekstrakulikuler_id);
 
-    $siswa = Siswa::find($siswa_id);
+    if (!$ekstrakulikuler) {
+        return redirect()->route('siswa.show', $siswa_id)
+                         ->with('error', 'Ekstrakulikuler not found');
+    }
 
-    $siswa->ekstrakulikulers()->create([
-        'nama_ekstrakulikuler' => $request->nama_ekstrakulikuler,
-        'tahun_mulai' => $request->tahun_mulai,
-    ]);
+    $ekstrakulikuler->delete();
 
     return redirect()->route('siswa.show', $siswa_id)
-                     ->with('success', 'Data ekstrakulikuler berhasil ditambahkan');
+                     ->with('success', 'Ekstrakulikuler deleted successfully');
 }
+
+
 
 }

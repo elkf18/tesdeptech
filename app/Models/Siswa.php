@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Ekstrakulikuler;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,6 +19,7 @@ class Siswa extends Model
         'gender',
         'foto',
     ];
+    
     public function ekstrakulikulers()
     {
         return $this->hasMany(Ekstrakulikuler::class);

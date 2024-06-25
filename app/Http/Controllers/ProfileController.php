@@ -28,7 +28,7 @@ class ProfileController extends Controller
             'email' => 'required|string|email|max:255|unique:admins,email,'.$admin->id,
             'tanggal_lahir' => 'required|date',
             'jenis_kelamin' => 'required|in:laki-laki,perempuan',
-            'password' => 'nullable|string|min:6|confirmed',
+            'password' => 'nullable|string|min:6',
         ]);
 
         $admin->nama_depan = $request->nama_depan;

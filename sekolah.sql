@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 25, 2024 at 04:58 PM
+-- Generation Time: Jun 25, 2024 at 08:16 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -45,7 +45,32 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`id`, `nama_depan`, `nama_belakang`, `email`, `tanggal_lahir`, `jenis_kelamin`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'fau', 'zi', 'fauzi@gmail.com', '2002-04-18', 'Laki-laki', '$2y$12$gA6qoAzlPZUNu09TRivtje5gx6oivNATGLApAdSfmYWAer.UOg7ky', NULL, '2024-06-25 07:35:30', '2024-06-25 07:35:46');
+(1, 'fau', 'zi', 'fauzi@gmail.com', '2002-04-18', 'Laki-laki', '$2y$12$czFwPE4tsGBb4wlm6IlP.OemNR2xG/mrQIbKqUh9ZQ1OkULZMviVi', NULL, '2024-06-25 07:35:30', '2024-06-25 10:53:10'),
+(2, 'elya', 'kumala', 'elya@gmail.com', '2002-04-18', 'Perempuan', '$2y$12$.GKm4jwsEc1NOoq/luunHOV7NA3SPlkRFKHVf2pLiDzMpimY1V3r6', NULL, '2024-06-25 11:11:55', '2024-06-25 11:12:47');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ekstrakulikulers`
+--
+
+CREATE TABLE `ekstrakulikulers` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `nama_ekstrakulikuler` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tahun_mulai` int(11) NOT NULL,
+  `siswa_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ekstrakulikulers`
+--
+
+INSERT INTO `ekstrakulikulers` (`id`, `nama_ekstrakulikuler`, `tahun_mulai`, `siswa_id`, `created_at`, `updated_at`) VALUES
+(3, 'renang', 2020, 5, '2024-06-25 09:26:05', '2024-06-25 09:26:05'),
+(4, 'badminton', 2023, 5, '2024-06-25 09:26:20', '2024-06-25 09:26:20'),
+(5, 'bersepeda', 2023, 2, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -85,7 +110,10 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (3, '2019_08_19_000000_create_failed_jobs_table', 1),
 (4, '2019_12_14_000001_create_personal_access_tokens_table', 1),
 (5, '2024_06_25_120757_create_admins_table', 1),
-(6, '2024_06_25_121027_create_siswas_table', 1);
+(6, '2024_06_25_121027_create_siswas_table', 1),
+(7, '2024_06_25_144451_create_ekstrakurikulers_table', 2),
+(8, '2024_06_25_144451_create_ekstrakulikulers_table', 3),
+(9, '2024_06_25_170547_create_ekstrakulikuler_siswa_table', 4);
 
 -- --------------------------------------------------------
 
@@ -142,8 +170,8 @@ CREATE TABLE `siswas` (
 --
 
 INSERT INTO `siswas` (`id`, `nama_depan`, `nama_belakang`, `no_hp`, `nis`, `alamat`, `jenis_kelamin`, `foto`, `created_at`, `updated_at`) VALUES
-(1, 'Elya', 'Kumala Fauziyah', '088230361351', '28823', 'RT.28 RW.07 Dusun Klubuk, Desa Kedungrejo, Kec.Pilangkenceng, Kab.Madiun,Jawa Timur', 'Laki-laki', 'gEz0Q3btCeTR256ixIfsXrW77iZvzjMm9apEvQhp.jpg', '2024-06-25 07:36:14', '2024-06-25 07:36:29'),
-(2, 'Elya', 'Kumala Fauziyah', '088230361351', '82828', 'RT.28 RW.07 Dusun Klubuk, Desa Kedungrejo, Kec.Pilangkenceng, Kab.Madiun,Jawa Timur', 'Laki-laki', 'foto/fVjIzm3UPQ6x6kDfxcYYvnrIFVwfRN9jE3Ba5Dab.jpg', '2024-06-25 07:39:56', '2024-06-25 07:39:56');
+(2, 'fau', 'zi', '0836626272', '182772', 'madiun', 'Laki-laki', NULL, NULL, NULL),
+(5, 'elya', 'kumala', '085283916394', '82737', 'madiun', 'Laki-laki', 'foto/iIFK8ZelZtQDSOoAttPcIWS6P1EChdDmhDzTY49i.png', '2024-06-25 09:25:16', '2024-06-25 09:25:16');
 
 -- --------------------------------------------------------
 
@@ -172,6 +200,13 @@ CREATE TABLE `users` (
 ALTER TABLE `admins`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `admins_email_unique` (`email`);
+
+--
+-- Indexes for table `ekstrakulikulers`
+--
+ALTER TABLE `ekstrakulikulers`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `ekstrakulikulers_siswa_id_foreign` (`siswa_id`);
 
 --
 -- Indexes for table `failed_jobs`
@@ -222,7 +257,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `admins`
 --
 ALTER TABLE `admins`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `ekstrakulikulers`
+--
+ALTER TABLE `ekstrakulikulers`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -234,7 +275,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -246,13 +287,23 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `siswas`
 --
 ALTER TABLE `siswas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `ekstrakulikulers`
+--
+ALTER TABLE `ekstrakulikulers`
+  ADD CONSTRAINT `ekstrakulikulers_siswa_id_foreign` FOREIGN KEY (`siswa_id`) REFERENCES `siswas` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

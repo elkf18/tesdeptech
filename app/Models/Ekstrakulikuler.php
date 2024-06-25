@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+// use App\Models\Ekstrakulikuler;
+use App\Models\Siswa;
 
 class Ekstrakulikuler extends Model
 {
@@ -15,8 +17,10 @@ class Ekstrakulikuler extends Model
         'tahun_mulai',
     ];
 
-    public function siswa()
+    public function siswas()
     {
         return $this->belongsTo(Siswa::class);
     }
+    
 }
+

@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ekstrakurikulers', function (Blueprint $table) {
+        Schema::create('ekstrakulikulers', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_ekstrakurikuler');
+            $table->string('nama_ekstrakulikuler');
             $table->integer('tahun_mulai');
             $table->unsignedBigInteger('siswa_id');
             $table->foreign('siswa_id')->references('id')->on('siswas')->onDelete('cascade');
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ekstrakurikulers');
+        Schema::dropIfExists('ekstrakulikulers');
     }
 };
